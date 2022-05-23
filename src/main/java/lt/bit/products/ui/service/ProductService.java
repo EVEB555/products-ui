@@ -1,6 +1,8 @@
 package lt.bit.products.ui.service;
 
 import lt.bit.products.ui.model.Product;
+import lt.bit.products.ui.service.error.ProductValidator;
+import lt.bit.products.ui.service.error.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,12 +14,9 @@ import java.util.UUID;
 public class ProductService {
 
 
-    private ProductValidator validator;
-
     private List<Product> products = new ArrayList<>();
 
-    public ProductService(ProductValidator validator) {
-       this.validator = validator;
+    public ProductService() {
 
        products.add(new Product("Product1", BigDecimal.valueOf(10.50), 5, "Red apple"));
        products.add(new Product("Product2", BigDecimal.valueOf(12.35), 11, "Blue Umbrella"));
@@ -33,16 +32,15 @@ public class ProductService {
 
     public void saveProduct (Product product) {
        // products.forEach(p->p.getId().equals(product.getId())); // lygina su produktu kuris ateis kaip parametras
-
-       Product existingProduct = findProduct(product.getId());
-       if (existingProduct == null) {
-           products.add(product);
-       } else {
-           existingProduct.setName((product.getName()));
-           existingProduct.setPrice((product.getPrice()));
-           existingProduct.setQuantity(product.getQuantity());
-           existingProduct.setDescription(product.getDescription());
-       }
+        Product existingProduct = findProduct(product.getId());
+        if (existingProduct == null) {
+            products.add(product);
+        } else {
+            existingProduct.setName(product.getName());
+            existingProduct.setPrice(product.getPrice());
+            existingProduct.setQuantity(product.getQuantity());
+            existingProduct.setDescription(product.getDescription());
+        }
     }
 
 
