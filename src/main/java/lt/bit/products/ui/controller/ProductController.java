@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.UUID;
 import lt.bit.products.ui.model.Product;
 import lt.bit.products.ui.service.ProductService;
+import lt.bit.products.ui.service.UserService;
 import lt.bit.products.ui.service.error.ProductValidator;
 import lt.bit.products.ui.service.error.ValidationException;
 import org.springframework.context.MessageSource;
@@ -20,18 +21,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 class ProductController {
 
     private final ProductService service;
+    private final UserService userService;
     private final ProductValidator validator;
     private final MessageSource messages;
 
-    ProductController(ProductService service, ProductValidator validator, //controller klases atsakingos uz adreso mapping
+    ProductController(ProductService service, UserService userService, ProductValidator validator, //controller klases atsakingos uz adreso mapping
                       MessageSource messages) {
         this.service = service;
+        this.userService = userService;
         this.validator = validator;
         this.messages = messages;
     }
 
     @GetMapping("/products")
     String showProducts(Model model) {
+        if (!userService.isAuthenticated()) {
+            return "login";
+        }
         List<Product> products = service.getProducts();
         model.addAttribute("productItems", products);
         return "productList";
@@ -39,12 +45,18 @@ class ProductController {
 
     @GetMapping("/products/{id}") //get visi imputai, text ir pns siunciami i url (adresa), daznai naudojama paieskoms
     String editProduct(@PathVariable UUID id, Model model) {
+        if (!userService.isAuthenticated()) {
+            return "login";
+        }
         model.addAttribute("productItem", service.getProduct(id)); //view'e esantis kintamasis taip vadinsis
         return "productForm";
     }
 
     @GetMapping("/products/add")
     String addProduct(Model model) {
+        if (!userService.isAuthenticated()) {
+            return "login";
+        }
         model.addAttribute("productItem", new Product());
         return "productForm";
     }
@@ -67,6 +79,9 @@ class ProductController {
 
     @GetMapping("/products/delete")
     String deleteProduct(@RequestParam UUID id) {
+        if (!userService.isAuthenticated()) {
+            return "login";
+        }
         service.deleteProduct(id);
         return "redirect:/products";
     }
