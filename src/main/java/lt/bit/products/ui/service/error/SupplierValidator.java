@@ -1,15 +1,17 @@
 package lt.bit.products.ui.service.error;
 
-import lt.bit.products.ui.model.Product;
+import lt.bit.products.ui.model.Supplier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-public class ProductValidator {
+public class SupplierValidator {
 
-    public void validate(Product product) throws ValidationException {
-        validateName(product.getName());
-        validateQuantity(product.getQuantity());
+
+    public void validate(Supplier supplier) throws ValidationException {
+        validateName(supplier.getName());
+// TODO:   validateCompanyCode(supplier.getCompanyCode());
+// TODO:   validateVatCode(supplier.getVatCode());
     }
 
     private void validateName(String name) throws ValidationException {
@@ -21,10 +23,5 @@ public class ProductValidator {
             throw new ValidationException(ErrorCode.VALUE_TOO_SHORT, "Name", 3);
         }
     }
-
-    private void validateQuantity(double quantity) throws ValidationException {
-        if (quantity < 0) {
-            throw new ValidationException(ErrorCode.NEGATIVE_NUMBER, "Quantity");
-        }
-    }
 }
+

@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<header th:insert="fragments/navbar.html"></header>
+<body>
+<span style="color: #CC0000" th:text="${errorMsg}"></span>
+<form method="post" th:action="@{/suppliers/save}" th:object="${supplierItem}">
+    <label>Name: </label><input type="text" th:field="*{name}">
+    <label>Company Code: </label><input type="text" th:field="*{companyCode}">
+    <label>VAT Code: </label><input type="text" th:field="*{vatCode}">
+    <button type="submit">Save</button>
+    <input type="hidden" th:field="*{id}">
+</form>
+</body>
+</html>

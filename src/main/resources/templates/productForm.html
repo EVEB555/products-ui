@@ -1,17 +1,62 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-
-</head>
+<head th:replace="fragments/head.html"></head>
+<header th:insert="fragments/navbar.html"></header>
 <body>
+<main class="product-form w-25">
 <span style="color: #CC0000" th:text="${errorMsg}"></span>
-    <form method="post" th:action="@{/products/save}" th:object="${productItem}">
-        <label>Name: </label><input type="text" th:field="*{name}">
-        <label>Price: </label><input type="text" th:field="*{price}">
-        <label>Quantity: </label><input type="text" th:field="*{quantity}">
-        <label>Description: </label><textarea th:field="*{description}"></textarea>
-        <button type="submit">Save</button>
-        <input type="hidden" th:field="*{id}">
-    </form>
+<form method="post" th:action="@{/products/save}" th:object="${productItem}">
+
+  <!---  <label>Name: </label><input type="text" th:field="*{name}">
+    <label>Price: </label><input type="text" th:field="*{price}">
+    <label>Quantity: </label><input type="text" th:field="*{quantity}">
+    <label>Supplier: </label>
+    <select th:field="*{supplierId}">
+        <option th:value="${null}"></option>
+        <option th:each="supplierItem : ${suppliers}" th:value="${supplierItem.id}" th:text="${supplierItem.name}"></option>
+    </select>
+    <br>
+    <label>Description: </label><textarea th:field="*{description}"></textarea>
+    <button type="submit">Save</button>
+    <input type="hidden" th:field="*{id}">--->
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" th:field="*{name}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Price</label>
+        <input type="text" th:field="*{price}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Quantity</label>
+        <input type="text" th:field="*{quantity}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Supplier</label>
+        <select class="form-select">
+            <option th:value="${null}"></option>
+            <option th:each="supplierItem : ${suppliers}" th:value="${supplierItem.id}" th:text="${supplierItem.name}"></option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input type="text" th:field="*{description}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Upload a document</label>
+        <input class="form-control" type="file" id="formFile">
+    </div>
+    <br>
+   <!-- <button type="submit">Save</button>-->
+    <button type="button" class="btn btn-primary"
+            style="--bs-btn-padding-x: .4rem; --bs-btn-font-size: .80rem;">Save
+    </button>
+
+    <input type="hidden" th:field="*{id}">
+
+</form>
+</main>
 </body>
 </html>
+

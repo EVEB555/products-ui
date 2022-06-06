@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/auth/login")
     String loginForm() {
         if(userService.isAuthenticated()) {
-            return "redirect:/products";
+            return "redirect:/productList.html";
         }
         return "login";
     }
@@ -33,9 +33,12 @@ public class UserController {
     String login(HttpServletRequest request, Model model) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        if (username.equals("admin") && password.equals("admin1")) {
-            userService.setAuthenticated(true); //isimena prisijungima
-            return "redirect:/products";
+
+        userService.login(username, password);
+
+        if (userService.isAuthenticated()) {
+            //userService.setAuthenticated(true); //isimena prisijungima
+            return "redirect:/";
         }
         model.addAttribute("errorMsg",
                 messages.getMessage("login.error.INVALID_CREDENTIALS", null, Locale.getDefault()));
@@ -44,7 +47,7 @@ public class UserController {
 
     @GetMapping("/auth/logout")
     String logout() {
-        userService.setAuthenticated(false);
+        userService.logout();
         return "login";
     }
 

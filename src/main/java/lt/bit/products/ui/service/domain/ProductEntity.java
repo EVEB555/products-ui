@@ -1,31 +1,39 @@
-package lt.bit.products.ui.model;
+package lt.bit.products.ui.service.domain;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Product {
+@Entity
+@Table(name = "products")
+public class ProductEntity implements Serializable {
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator",
+            parameters = {
+                    @Parameter(
+                            name = "uuid_gen_strategy_class",
+                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+                    )
+            }
+    )
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-    private String name; // private neexposina laukelio, bet tuomet naudojami metodai
+
+
+    @Column (name = "name")
+    private String name;
+
     private BigDecimal price;
-    //private Integer quantity, int - primatyvus, Integer - objektinis tipas.
-    // Jei norim irasyti null i duomenu baze su integer bus galima ja priskirti (null palaikomas)
     private double quantity;
     private String description;
-    private UUID supplierId;
 
-    public Product() {
-        this.id = UUID.randomUUID();
-    }
-
-    /*public Product(String name, BigDecimal price, double quantity, String description) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.description = description;
-
-    }
-*/
 
     public UUID getId() {
         return id;
@@ -65,12 +73,5 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-    public UUID getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(UUID supplierId) {
-        this.supplierId = supplierId;
     }
 }

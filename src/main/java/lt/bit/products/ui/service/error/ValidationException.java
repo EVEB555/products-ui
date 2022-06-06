@@ -5,7 +5,7 @@ public class ValidationException extends Exception {
     private ErrorCode code;
     private Object[] params;
 
-    public ValidationException(ErrorCode code, Object[] params) {
+    public ValidationException(ErrorCode code, Object... params) {
         super(code.name());
         this.code = code;
         this.params = params;

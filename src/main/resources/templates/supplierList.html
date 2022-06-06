@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<header th:insert="fragments/navbar.html"></header>
+<body>
+<br>
+<table class="table w-50">
+    <thead class="table-light">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Company Code</th>
+        <th>VAT code</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tr th:each="item : ${supplierItems}">
+        <td th:text="${item.id}">
+        <td th:text="${item.name}">
+        <td th:text="${item.companyCode}">
+        <td th:text="${item.vatCode}">
+        <td>
+            <a th:href="@{'/suppliers/' + ${item.id}}">Edit</a>
+            <a th:href="@{'/suppliers/delete?id=' + ${item.id}}" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+</table>
+<a th:href="@{/products/add}"><button type="submit" class="btn btn-primary btn-sm">[+] Add New</button></a>
+</body>
+</html>
