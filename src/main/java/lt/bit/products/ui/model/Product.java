@@ -12,20 +12,8 @@ public class Product {
     private double quantity;
     private String description;
     private UUID supplierId;
-
-    public Product() {
-        this.id = UUID.randomUUID();
-    }
-
-    /*public Product(String name, BigDecimal price, double quantity, String description) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.description = description;
-
-    }
-*/
+    private String imageName;
+    private byte[] imageFileContents;
 
     public UUID getId() {
         return id;
@@ -66,6 +54,23 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public byte[] getImageFileContents() {
+        return imageFileContents;
+    }
+
+    public void setImageFileContents(byte[] imageFileContents) {
+        this.imageFileContents = imageFileContents;
+    }
+
     public UUID getSupplierId() {
         return supplierId;
     }

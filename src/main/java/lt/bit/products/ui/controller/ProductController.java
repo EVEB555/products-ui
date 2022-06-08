@@ -10,8 +10,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -79,14 +81,24 @@ class ProductController {
     }
 
     @PostMapping("/products/save") //post metodas siuncia info per request body (nematoma dali), formoms dazniausiai naudojamas post
-    String saveProduct(@ModelAttribute Product product, Model model) throws ValidationException {  // model atributas padeda model nukeliauti i view
+    String saveProduct(@ModelAttribute Product product, @RequestParam(name = "imageFile", required = false) MultipartFile file, Model model) throws ValidationException {  // model atributas padeda model nukeliauti i view; required false - neprivalomas failas
         try {
             validator.validate(product);
+            if(file != null & !file.isEmpty()) {
+                validator.validate(file);
+                product.setImageName(file.getOriginalFilename());
+                product.setImageFileContents(file.getBytes());
+            }
         } catch (ValidationException e) {
             model.addAttribute("errorMsg",
                     messages.getMessage("validation.error." + e.getCode(), e.getParams(),
                             Locale.getDefault()));
             model.addAttribute("productItem", product); //model reikalingas kad prideti attributes
+            return "productForm";
+        } catch (IOException e) {
+            model.addAttribute("errorMsg",
+                    messages.getMessage("system.error.FILE_UPLOAD", null, Locale.getDefault()));
+            model.addAttribute("productItem", product);
             return "productForm";
         }
         service.saveProduct(product);

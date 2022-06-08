@@ -1,21 +1,16 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head.html"></head>
-<header th:insert="fragments/navbar.html"></header>
 <body>
+<header th:insert="fragments/navbar.html"></header>
+<form method="get" style="margin-left: 2px" th:action="@{/products}">
+    Id: <input type="text" name="id" th:value="${searchCriteriaId}">&nbsp;&nbsp;
+    Name: <input type="text" name="name" th:value="${searchCriteriaName}">
+    <button class="btn btn-primary mb-3" type="submit">Search</button>
+    <button class="btn btn-secondary mb-3" type="reset" onclick="window.location.href='/products'">Reset</button>
+</form>
 <br>
-<tr>
-    <td colspan="4">
-        <form method="get" th:action="@{/products}">
-            Id: <input type="text" name="id" th:value="${searchCriteriaId}">
-            Name: <input type="text" name="name" th:value="${searchCriteriaName}">
-            <input type="submit" value="Search">
-            <input type="reset" value="Reset" onclick="window.location.href='/products'">
-        </form>
-    </td>
-</tr>
-<table class="table w-50">
-    <thead class="table-light">
+<table class="table table-striped table-bordered">
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -23,8 +18,6 @@
         <th>Quantity</th>
         <th>Actions</th>
     </tr>
-    </thead>
-
     <tr th:each="item : ${productItems}">
         <td th:text="${item.id}">
         <td th:text="${item.name}">
@@ -36,7 +29,6 @@
         </td>
     </tr>
 </table>
-<!--<a th:href="@{/products/add}"><button>[+] Add New</button></a>-->
-<a th:href="@{/products/add}"><button type="submit" class="btn btn-primary btn-sm">[+] Add New</button></a>
+<a th:href="@{/products/add}"><button class="btn btn-success mb-3" type="button">[+] Add New</button></a>
 </body>
 </html>

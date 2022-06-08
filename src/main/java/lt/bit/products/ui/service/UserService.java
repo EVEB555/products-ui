@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Service
-@SessionAttributes("authenticated") // nurodo kas yra sesijos atributas, palaikantis sesija
+@SessionAttributes("authenticated")
 public class UserService {
 
     private final UserRepository repository;
@@ -16,10 +16,10 @@ public class UserService {
         this.repository = repository;
     }
 
-    public void login (String username, String password) {
-       if (repository.existsByUsernameAndPassword(username, password)){
-        setAuthenticated(true);
-       }
+    public void login(String username, String password) {
+        if (repository.existsByUsernameAndPassword(username, password)) {
+            setAuthenticated(true);
+        }
     }
 
     public void logout() {
@@ -30,8 +30,7 @@ public class UserService {
         return authenticated;
     }
 
-    public void setAuthenticated(boolean authenticated) {
+    private void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
     }
-
 }
