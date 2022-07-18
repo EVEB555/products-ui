@@ -6,7 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -14,6 +19,7 @@ import javax.persistence.Table;
 public class UserEntity {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String username;
   private String password;
@@ -26,6 +32,9 @@ public class UserEntity {
 
   @Column(name = "created_date")
   private LocalDate createdAt;
+
+  @Column(name = "last_edit_ts")
+  private LocalDateTime editedAt;
 
   @Column(name = "last_login_ts")
   private LocalDateTime loggedInAt;
@@ -74,8 +83,26 @@ public class UserEntity {
     return createdAt;
   }
 
+  @PostPersist
+  private void setRegistrationDate() {
+    setCreatedAt(LocalDate.now());
+  }
+
   public void setCreatedAt(LocalDate createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getEditedAt() {
+    return editedAt;
+  }
+
+  @PreUpdate
+  private void setLastEditedDate() {
+    setEditedAt(LocalDateTime.now());
+  }
+
+  public void setEditedAt(LocalDateTime editedAt) {
+    this.editedAt = editedAt;
   }
 
   public LocalDateTime getLoggedInAt() {
